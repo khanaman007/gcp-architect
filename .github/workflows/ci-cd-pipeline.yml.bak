@@ -36,7 +36,9 @@ jobs:
 
       # Step 4: Build the application
       - name: Build the application
-        run:  dotnet build inventory.csproj
+        run: |
+          cd ../../inventory
+          dotnet build inventory.csproj
 
       # Step 5: Run tests (Optional step, add if you have unit tests)
       - name: Run tests
