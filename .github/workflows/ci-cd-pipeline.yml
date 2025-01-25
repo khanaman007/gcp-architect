@@ -57,4 +57,4 @@ jobs:
       - name: Deploy to Google Cloud App Engine
         run: |
           gcloud app browse || true  # Optional: Verify if App Engine is reachable
-          gcloud app deploy ./publish/app.yaml --quiet --project teak-environs-445405-g2
+          gcloud app deploy ./publish/app.yaml --quiet 
