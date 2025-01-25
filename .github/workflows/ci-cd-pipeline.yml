@@ -31,6 +31,8 @@ jobs:
       # Step 3: Restore dependencies
       - name: Restore dependencies
         run: dotnet restore
+      - name: List files for debugging
+         run: ls -R
 
       # Step 4: Build the application
       - name: Build the application
