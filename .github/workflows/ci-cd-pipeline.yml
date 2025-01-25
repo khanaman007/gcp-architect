@@ -1,0 +1,52 @@
+name: CI/CD for .NET 8.0 Core App to GCP App Engine
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up .NET SDK
+      - name: Set up .NET SDK 8.0
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      # Step 3: Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Step 4: Build the application
+      - name: Build the application
+        run: dotnet build --configuration Release
+
+      # Step 5: Run tests (Optional step, add if you have unit tests)
+      - name: Run tests
+        run: dotnet test --configuration Release
+
+      # Step 6: Publish the application
+      - name: Publish the application
+        run: dotnet publish --configuration Release --output ./publish
+
+      # Step 7: Set up Google Cloud authentication
+      - name: Set up Google Cloud Authentication
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      # Step 8: Deploy to GCP App Engine
+      - name: Deploy to Google Cloud App Engine
+        run: |
+          gcloud app browse || true  # Optional: Verify if App Engine is reachable
+          gcloud app deploy ./publish/app.yaml --quiet

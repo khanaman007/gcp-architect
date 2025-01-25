@@ -1,0 +1,40 @@
+name: CI/CD Pipeline for GCP
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger CI checks on pull request to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu22
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js (example for Node.js app)
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        
+    - name: Install dependencies
+      run: npm install  # Change this based on your project's requirements
+      
+    - name: Run tests (optional)
+      run: npm test  # Optional step for running tests
+    
+    - name: Authenticate with GCP
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        
+    - name: Deploy to GCP (Example: App Engine)
+      run: |
+        gcloud app browse --project YOUR_PROJECT_ID
+        gcloud app deploy --project YOUR_PROJECT_ID
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
