@@ -15,13 +15,16 @@ jobs:
     
       # Step 1: Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
+        run: git clone https://github.com/${{ github.repository }} 
 
       # Step 2: Set up .NET SDK
-      - name: Set up .NET SDK 8.0
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
+      - name: Install .NET 8.0 SDK
+        run: |
+          wget https://download.visualstudio.microsoft.com/download/pr/abcd1234/dotnet-sdk-8.0.100-linux-x64.tar.gz
+          mkdir -p $HOME/dotnet
+          tar -zxf dotnet-sdk-8.0.100-linux-x64.tar.gz -C $HOME/dotnet
+          export PATH=$PATH:$HOME/dotnet
+          dotnet --version
 
       # Step 3: Restore dependencies
       - name: Restore dependencies
