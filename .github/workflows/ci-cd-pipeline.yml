@@ -44,7 +44,7 @@ jobs:
 
       # Step 7: Set up Google Cloud authentication
       - name: Set up Google Cloud Authentication
-         run: |
+        run: |
           echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/gcp-key.json
           gcloud auth activate-service-account --key-file /tmp/gcp-key.json
           gcloud config set project teak-environs-445405-g2
